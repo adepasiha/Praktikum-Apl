@@ -56,20 +56,21 @@ int main() {
 
     // Daftar lagu awal
     Song songs[MAX_SONGS] = {
-        {"Untuk Perempuan Yang Sedang Dalam Pelukan", "Pashmina"},
+        {"Kaulah hatiku", "Pashmina"},
         {"Blue", "Eiffel 65"},
         {"Sempurna", "Gigi"},
         {"Pica Pica", "Krisdayanti"},
         {"Kangen", "Dewa 19"},
         {"Cold", "Maroon 5"},
         {"Cry", "James Blunt"},
-        {"December", "Gigi"}
+        {"December", "Gigi"},
+       
     };
     int songCount = 8; // Jumlah lagu yang sudah ada
-    int choice = 0; // Pilihan menu
+    int opsi = 0; // Pilihan menu
 
     // Menampilkan menu
-    while (choice != 5) {
+    while (opsi != 5) {
         cout << "\n=== Menu Playlist ===" << endl;
         if (isAdmin) {
             cout << "1. Tambah Lagu" << endl;
@@ -81,10 +82,10 @@ int main() {
         }
         cout << "5. Keluar" << endl;
         cout << "Pilih menu: ";
-        cin >> choice;
+        cin >> opsi;
 
         // Menangani pilihan menu
-        if (choice == 1) { // Tambah Lagu (hanya untuk admin)
+        if (opsi == 1) { // Tambah Lagu (hanya untuk admin)
             if (isAdmin) {
                 if (songCount < MAX_SONGS) {
                     cout << "Masukkan Judul Lagu: ";
@@ -100,14 +101,14 @@ int main() {
             } else {
                 cout << "Akses ditolak! Hanya admin yang dapat menambah lagu." << endl;
             }
-        } else if (choice == 2) { // Tampilkan Semua Lagu
+        } else if (opsi == 2) { // Tampilkan Semua Lagu
             cout << "\n=== Daftar Lagu ===" << endl;
             cout << left << setw(30) << "Judul" << setw(30) << "Artis" << endl;
             cout << string(60, '-') << endl;
             for (int i = 0; i < songCount; i++) {
                 cout << left << setw(30) << songs[i].title << setw(30) << songs[i].artist << endl;
             }
-        } else if (choice == 3) { // Hapus Lagu (hanya untuk admin)
+        } else if (opsi == 3) { // Hapus Lagu (hanya untuk admin)
             if (isAdmin) {
                 int indexToDelete;
                 cout << "Masukkan nomor lagu yang ingin dihapus (1-" << songCount << "): ";
@@ -124,7 +125,7 @@ int main() {
             } else {
                 cout << "Akses ditolak! Hanya admin yang dapat menghapus lagu." << endl;
             }
-        } else if (choice == 4) { // Ubah Lagu (hanya untuk admin)
+        } else if (opsi == 4) { // Ubah Lagu (hanya untuk admin)
             if (isAdmin) {
                 int indexToEdit;
                 cout << "Masukkan nomor lagu yang ingin diubah (1-" << songCount << "): ";
@@ -142,7 +143,7 @@ int main() {
             } else {
                 cout << "Akses ditolak! Hanya admin yang dapat mengubah lagu." << endl;
             }
-        } else if (choice == 5) { // Keluar
+        } else if (opsi == 5) { // Keluar
             cout << "Terima kasih! Program dihentikan." << endl;
         } else { // Pilihan tidak valid
             cout << "Pilihan tidak valid! Silakan coba lagi." << endl;
