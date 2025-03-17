@@ -64,8 +64,20 @@ int main() {
         {"Cold", "Maroon 5"},
         {"Cry", "James Blunt"},
         {"December", "Gigi"},
-       
+        {"Yellow", "ColdPlay"},
     };
+    
+    // Menambahkan tiga array satu dimensi
+    string genres[MAX_SONGS] = {
+        "Pop", "Dance", "Rock", "Pop", "Rock", "Pop", "Pop", "Rock", "Alternative"
+    };
+    int releaseYears[MAX_SONGS] = {
+        2020, 1999, 2000, 2001, 1999, 2017, 2004, 2000, 2000
+    };
+    int durations[MAX_SONGS] = {
+        210, 180, 240, 200, 220, 210, 240, 180, 210
+    };
+
     int songCount = 8; // Jumlah lagu yang sudah ada
     int opsi = 0; // Pilihan menu
 
@@ -93,6 +105,15 @@ int main() {
                     getline(cin, songs[songCount].title);
                     cout << "Masukkan Nama Artis: ";
                     getline(cin, songs[songCount].artist);
+                    
+                    // Menambahkan input untuk genre, tahun rilis, dan durasi
+                    cout << "Masukkan Genre: ";
+                    getline(cin, genres[songCount]);
+                    cout << "Masukkan Tahun Rilis: ";
+                    cin >> releaseYears[songCount];
+                    cout << "Masukkan Durasi (dalam detik): ";
+                    cin >> durations[songCount];
+                    
                     songCount++;
                     cout << "Lagu berhasil ditambahkan!" << endl;
                 } else {
@@ -103,10 +124,14 @@ int main() {
             }
         } else if (opsi == 2) { // Tampilkan Semua Lagu
             cout << "\n=== Daftar Lagu ===" << endl;
-            cout << left << setw(30) << "Judul" << setw(30) << "Artis" << endl;
-            cout << string(60, '-') << endl;
+            cout << left << setw(30) << "Judul" << setw(30) << "Artis" << setw(20) << "Genre" << setw(15) << "Tahun" << setw(10) << "Durasi" << endl;
+            cout << string(105, '-') << endl;
             for (int i = 0; i < songCount; i++) {
-                cout << left << setw(30) << songs[i].title << setw(30) << songs[i].artist << endl;
+                cout << left << setw(30) << songs[i].title 
+                     << setw(30) << songs[i].artist 
+                     << setw(20) << genres[i] 
+                     << setw(15) << releaseYears[i] 
+                     << setw(10) << durations[i] << endl;
             }
         } else if (opsi == 3) { // Hapus Lagu (hanya untuk admin)
             if (isAdmin) {
@@ -116,6 +141,9 @@ int main() {
                 if (indexToDelete > 0 && indexToDelete <= songCount) {
                     for (int i = indexToDelete - 1; i < songCount - 1; i++) {
                         songs[i] = songs[i + 1];
+                        genres[i] = genres[i + 1];
+                        releaseYears[i] = releaseYears[i + 1];
+                        durations[i] = durations[i + 1];
                     }
                     songCount--;
                     cout << "Lagu berhasil dihapus!" << endl;
@@ -136,6 +164,15 @@ int main() {
                     getline(cin, songs[indexToEdit - 1].title);
                     cout << "Masukkan Nama Artis Baru: ";
                     getline(cin, songs[indexToEdit - 1].artist);
+                    
+                    // Mengubah genre, tahun rilis, dan durasi
+                    cout << "Masukkan Genre Baru: ";
+                    getline(cin, genres[indexToEdit - 1]);
+                    cout << "Masukkan Tahun Rilis Baru: ";
+                    cin >> releaseYears[indexToEdit - 1];
+                    cout << "Masukkan Durasi Baru (dalam detik): ";
+                    cin >> durations[indexToEdit - 1];
+                    
                     cout << "Lagu berhasil diubah!" << endl;
                 } else {
                     cout << "Nomor lagu tidak valid!" << endl;
