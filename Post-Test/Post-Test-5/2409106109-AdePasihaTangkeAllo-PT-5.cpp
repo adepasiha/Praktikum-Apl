@@ -18,16 +18,35 @@ struct User {
     int isAdmin;
 };
 
+// Fungsi tukar untuk Song dan atribut terkait
+void swapSongs(Song* songs, string* genres, int* releaseYears, int* durations, int i, int j) {
+    Song tempSong = songs[i];
+    songs[i] = songs[j];
+    songs[j] = tempSong;
+
+    string tempGenre = genres[i];
+    genres[i] = genres[j];
+    genres[j] = tempGenre;
+
+    int tempYear = releaseYears[i];
+    releaseYears[i] = releaseYears[j];
+    releaseYears[j] = tempYear;
+
+    int tempDuration = durations[i];
+    durations[i] = durations[j];
+    durations[j] = tempDuration;
+}
+
 // Prosedur untuk menampilkan lagu secara rekursif dengan pointer
-    void tampilkanLaguRekursif(Song* songs, string* genres, int* releaseYears, int* durations, int index, int total) {
-        if (index >= total) return;
-        cout << left << setw(30) << songs[index].title
-            << setw(30) << songs[index].artist
-            << setw(20) << genres[index]
-            << setw(15) << releaseYears[index]
-            << setw(10) << durations[index] << endl;
-        tampilkanLaguRekursif(songs, genres, releaseYears, durations, index + 1, total);
-    }
+void tampilkanLaguRekursif(Song* songs, string* genres, int* releaseYears, int* durations, int index, int total) {
+    if (index >= total) return;
+    cout << left << setw(30) << songs[index].title
+         << setw(30) << songs[index].artist
+         << setw(20) << genres[index]
+         << setw(15) << releaseYears[index]
+         << setw(10) << durations[index] << endl;
+    tampilkanLaguRekursif(songs, genres, releaseYears, durations, index + 1, total);
+}
 
 // Prosedur untuk menampilkan semua lagu
 void tampilkanSemuaLagu(Song* songs, string* genres, int* releaseYears, int* durations, int songCount) {
@@ -85,25 +104,6 @@ void ubahLagu(Song* songs, string* genres, int* releaseYears, int* durations, in
     cin >> indexToEdit;
     if (indexToEdit > 0 && indexToEdit <= songCount) {
         cin.ignore();
-        cout << "Masukkan Judul Baru: ";
-        getline(cin, songs[indexToEdit - 1].title);
-        cout << "Masukkan Nama Artis Baru: ";
-        getline(cin, songs[indexToEdit - 1].artist);
-        cout << "Masukkan Genre Baru: ";
-        getline(cin, genres[indexToEdit - 1]);
-        cout << "Masukkan Tahun Rilis Baru: ";
-        cin >> releaseYears[indexToEdit - 1];
-        cout << "Masukkan Durasi Baru (dalam detik): ";
-        cin >> durations[indexToEdit - 1];
-
-        cout << "Lagu berhasil diubah!" << endl;
-    } else {
-        cout << "Nomor lagu tidak valid!" << endl;
-    }
-}
-
-// Fungsi login dengan pointer untuk isAdmin, tanpa bool
-int login(User* users, int userCount, string username, string nim, int* isAdmin) {
     int i;
     for (i = 0; i < userCount; i = i + 1) {
         if (users[i].username == username && users[i].nim == nim) {
@@ -188,8 +188,125 @@ int main() {
 
         if (isLoggedIn == 0) {
             cout << "Terlalu banyak percobaan. Program dihentikan." << endl;
-            return 0;
+// Fungsi tukar untuk Song dan atribut terkait
+void swapSongs(Song* songs, string* genres, int* releaseYears, int* durations, int i, int j) {
+    Song tempSong = songs[i];
+    songs[i] = songs[j];
+    songs[j] = tempSong;
+
+    string tempGenre = genres[i];
+    genres[i] = genres[j];
+    genres[j] = tempGenre;
+
+    int tempYear = releaseYears[i];
+    releaseYears[i] = releaseYears[j];
+    releaseYears[j] = tempYear;
+
+    int tempDuration = durations[i];
+    durations[i] = durations[j];
+    durations[j] = tempDuration;
+}
+
+// Bubble sort ascending untuk judul lagu (string)
+void bubbleSortTitleAsc(Song* songs, string* genres, int* releaseYears, int* durations, int songCount) {
+    int i, j;
+    for (i = 0; i < songCount - 1; i++) {
+        for (j = 0; j < songCount - i - 1; j++) {
+            if (songs[j].title > songs[j + 1].title) {
+                swapSongs(songs, genres, releaseYears, durations, j, j + 1);
+            }
         }
+    }
+}
+
+// Selection sort descending untuk tahun rilis (int)
+void selectionSortYearDesc(Song* songs, string* genres, int* releaseYears, int* durations, int songCount) {
+    int i, j, maxIdx;
+    for (i = 0; i < songCount - 1; i++) {
+        maxIdx = i;
+        for (j = i + 1; j < songCount; j++) {
+            if (releaseYears[j] > releaseYears[maxIdx]) {
+                maxIdx = j;
+            }
+        }
+        if (maxIdx != i) {
+            swapSongs(songs, genres, releaseYears, durations, i, maxIdx);
+        }
+    }
+}
+
+// Insertion sort ascending untuk durasi (int)
+void insertionSortDurationAsc(Song* songs, string* genres, int* releaseYears, int* durations, int songCount) {
+    int i, j;
+    Song keySong;
+    string keyGenre;
+    int keyYear, keyDuration;
+
+    for (i = 1; i < songCount; i++) {
+        keySong = songs[i];
+        keyGenre = genres[i];
+        keyYear = releaseYears[i];
+        keyDuration = durations[i];
+        j = i - 1;
+
+        while (j >= 0 && durations[j] > keyDuration) {
+            songs[j + 1] = songs[j];
+            genres[j + 1] = genres[j];
+            releaseYears[j + 1] = releaseYears[j];
+            durations[j + 1] = durations[j];
+            j = j - 1;
+        }
+        songs[j + 1] = keySong;
+        genres[j + 1] = keyGenre;
+        releaseYears[j + 1] = keyYear;
+        durations[j + 1] = keyDuration;
+    }
+}
+
+int main() {
+    Song songs[MAX_SONGS] = {
+        {"Kaulah hatiku", "Pashmina"},
+        {"Blue", "Eiffel 65"},
+        {"Sempurna", "Gigi"},
+        {"Pica Pica", "Krisdayanti"},
+        {"Kangen", "Dewa 19"},
+        {"Cold", "Maroon 5"},
+        {"Cry", "James Blunt"},
+        {"December", "Gigi"},
+        {"Yellow", "ColdPlay"},
+    };
+
+    string genres[MAX_SONGS] = {
+        "Pop", "Dance", "Rock", "Pop", "Rock", "Pop", "Pop", "Rock", "Alternative"
+    };
+    int releaseYears[MAX_SONGS] = {
+        2020, 1999, 2000, 2001, 1999, 2017, 2004, 2000, 2000
+    };
+    int durations[MAX_SONGS] = {
+        210, 180, 240, 200, 220, 210, 240, 180, 210
+    };
+
+    int songCount = 9;
+    int userCount = 0;
+    User users[MAX_USERS];
+
+    char registerChoice;
+    cout << "Apakah Anda ingin mendaftar? (y/n): ";
+    cin >> registerChoice;
+    cin.ignore();
+
+    while (registerChoice == 'y' && userCount < MAX_USERS) {
+        cout << "Masukkan Username: ";
+        getline(cin, users[userCount].username);
+        cout << "Masukkan NIM: ";
+        getline(cin, users[userCount].nim);
+        if (users[userCount].username == "adeganteng" && users[userCount].nim == "109") {
+            users[userCount].isAdmin = 1;
+        } else {
+            users[userCount].isAdmin = 0;
+        }
+        userCount = userCount + 1;
+        cout << "Pendaftaran berhasil! Pengguna terdaftar: " << users[userCount - 1].username << endl;
 
     int opsi = 0;
     while (opsi != 5) {
